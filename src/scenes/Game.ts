@@ -6,6 +6,8 @@ export default class Game extends Phaser.Scene {
   private timerText!: Phaser.GameObjects.Text;
   private tiles!: Phaser.GameObjects.Group;
 
+  public emitter!: Phaser.Events.EventEmitter;
+
   constructor() {
     super(SceneKeys.Game);
   }
@@ -26,7 +28,7 @@ export default class Game extends Phaser.Scene {
 
     // make board out of tiles
     let positions: number[] = this.getRandomBoard();
-    console.log(this.isSolvable(positions));
+
     for (let i = 0; i < TilePositions.length; i++) {
       const newX = TilePositions[i].x * Tile.SIZE + width * 0.5;
       const newY = TilePositions[i].y * Tile.SIZE + height * 0.5;
@@ -35,23 +37,21 @@ export default class Game extends Phaser.Scene {
       this.add.existing(newTile);
       this.tiles.add(newTile);
     }
+
+    this.emitter = new Phaser.Events.EventEmitter();
+
+    this.emitter.on("tilepressed", this.moveTile, this);
   }
 
   private updateTimer(time: number) {
     this.timerText.text = this.formatTime(time);
   }
 
-  update(time: number, delta: number): void {
+  update(time: number, _delta: number): void {
     this.updateTimer(time - this.time.startTime);
+    const hasWon = this.updateTileStatus();
 
-    let tiles = this.tiles.getChildren() as Tile[];
-    tiles.forEach((t, i) => {
-      if (t.tileNum - 1 === i) {
-        t.correct();
-      } else {
-        t.incorrect();
-      }
-    });
+    console.log(hasWon);
   }
 
   private formatTime(ms: number) {
@@ -108,5 +108,72 @@ export default class Game extends Phaser.Scene {
     }
 
     return numberOfInversions % 2 == 0;
+  }
+
+  private moveTile(tile: Tile) {
+    if (tile.tileNum === 9) {
+      return;
+    }
+
+    const emptyTile: Tile = (this.tiles.getChildren() as Tile[]).find(
+      (t) => t.tileNum === 9,
+    )!;
+
+    const newPos = this.newPos(tile, emptyTile);
+    // only move tile if emptyTile is perpendicular to it
+    if (newPos !== Phaser.Math.Vector2.ZERO) {
+      // swap position of tiles
+      emptyTile.x = tile.x;
+      emptyTile.y = tile.y;
+      this.tweens.add({
+        targets: tile,
+        x: tile.x + Tile.SIZE * newPos.x,
+        y: tile.y + Tile.SIZE * newPos.y,
+        duration: 750,
+      });
+    }
+  }
+
+  private newPos(tile: Tile, emptyTile: Tile): Phaser.Math.Vector2 {
+    let diffPos = new Phaser.Math.Vector2(
+      (emptyTile.x - tile.x) / Tile.SIZE,
+      (emptyTile.y - tile.y) / Tile.SIZE,
+    );
+
+    const { RIGHT, LEFT, DOWN, UP, ZERO } = Phaser.Math.Vector2;
+
+    if (diffPos.x === RIGHT.x && diffPos.y === RIGHT.y) {
+      return RIGHT;
+    } else if (diffPos.x === LEFT.x && diffPos.y === LEFT.y) {
+      return LEFT;
+    } else if (diffPos.x === DOWN.x && diffPos.y === DOWN.y) {
+      return DOWN;
+    } else if (diffPos.x === UP.x && diffPos.y === UP.y) {
+      return UP;
+    } else {
+      return ZERO;
+    }
+  }
+
+  private updateTileStatus() {
+    let tiles = this.tiles.getChildren() as Tile[];
+    let hasWon = true;
+
+    for (let i = 0; i < tiles.length; i++) {
+      const newX =
+        TilePositions[tiles[i].tileNum - 1].x * Tile.SIZE +
+        this.scale.width * 0.5;
+      const newY =
+        TilePositions[tiles[i].tileNum - 1].y * Tile.SIZE +
+        this.scale.height * 0.5;
+      if (tiles[i].x === newX && tiles[i].y === newY) {
+        tiles[i].correct();
+      } else {
+        tiles[i].incorrect();
+        hasWon = false;
+      }
+    }
+
+    return hasWon;
   }
 }

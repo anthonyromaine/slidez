@@ -1,4 +1,5 @@
 import TextureKeys from "../constants/TextureKeys";
+import Game from "../scenes/Game";
 
 export default class Tile extends Phaser.GameObjects.Container {
   static readonly SIZE: number = 160;
@@ -25,6 +26,9 @@ export default class Tile extends Phaser.GameObjects.Container {
     this.add(this.tileSprite);
     this.add(this.tileText);
 
+    this.tileSprite.setInteractive();
+    this.tileSprite.on("pointerdown", this.moveTile, this);
+
     if (tileNum === 9) {
       this.visible = false;
     }
@@ -40,5 +44,9 @@ export default class Tile extends Phaser.GameObjects.Container {
   incorrect() {
     this.tileSprite.setTexture(TextureKeys.Tile);
     this.tileText.setColor("#000000");
+  }
+
+  moveTile() {
+    this.scene.emitter.emit("tilepressed", this);
   }
 }
