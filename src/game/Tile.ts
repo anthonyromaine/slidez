@@ -1,5 +1,4 @@
 import TextureKeys from "../constants/TextureKeys";
-import Game from "../scenes/Game";
 
 export default class Tile extends Phaser.GameObjects.Container {
   static readonly SIZE: number = 160;
@@ -47,6 +46,9 @@ export default class Tile extends Phaser.GameObjects.Container {
   }
 
   moveTile() {
-    this.scene.emitter.emit("tilepressed", this);
+    const scene = this.scene as Phaser.Scene & {
+      emitter: Phaser.Events.EventEmitter;
+    };
+    scene.emitter.emit("tilepressed", this);
   }
 }
