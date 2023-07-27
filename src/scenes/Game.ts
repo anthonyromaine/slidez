@@ -43,6 +43,15 @@ export default class Game extends Phaser.Scene {
 
   update(time: number, delta: number): void {
     this.updateTimer(time - this.time.startTime);
+
+    let tiles = this.tiles.getChildren() as Tile[];
+    tiles.forEach((t, i) => {
+      if (t.tileNum - 1 === i) {
+        t.correct();
+      } else {
+        t.incorrect();
+      }
+    });
   }
 
   private formatTime(ms: number) {

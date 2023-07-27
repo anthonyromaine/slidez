@@ -3,15 +3,17 @@ import TextureKeys from "../constants/TextureKeys";
 export default class Tile extends Phaser.GameObjects.Container {
   static readonly SIZE: number = 160;
   private tileSprite: Phaser.GameObjects.Sprite;
+  private tileText: Phaser.GameObjects.Text;
+  readonly tileNum: number;
 
   constructor(scene: Phaser.Scene, x: number, y: number, tileNum: number) {
     super(scene, x, y);
-
+    this.tileNum = tileNum;
     this.tileSprite = this.scene.add
       .sprite(0, 0, TextureKeys.Tile)
       .setScale(0.5);
 
-    const tileText = scene.add
+    this.tileText = scene.add
       .text(0, -10, String(tileNum), {
         fontFamily: "Oswald",
         fontSize: "96px",
@@ -21,7 +23,7 @@ export default class Tile extends Phaser.GameObjects.Container {
       .setOrigin(0.5, 0.5);
 
     this.add(this.tileSprite);
-    this.add(tileText);
+    this.add(this.tileText);
 
     if (tileNum === 9) {
       this.visible = false;
@@ -29,4 +31,14 @@ export default class Tile extends Phaser.GameObjects.Container {
   }
 
   preUpdate() {}
+
+  correct() {
+    this.tileSprite.setTexture(TextureKeys.TileCorrect);
+    this.tileText.setColor("#73CD4B");
+  }
+
+  incorrect() {
+    this.tileSprite.setTexture(TextureKeys.Tile);
+    this.tileText.setColor("#000000");
+  }
 }
