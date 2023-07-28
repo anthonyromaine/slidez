@@ -6,16 +6,10 @@
 
 @font-face {
   font-family: Oswald;
-  src: url("Oswald-VariableFont_wght.ttf");
+  src: url("font/Oswald-VariableFont_wght.ttf");
 }
 
 @font-face {
   font-family: Semplicita;
-  src: url("Semplicita\ Ombra.otf");
+  src: url("font/Semplicita\ Ombra.otf");
 }
-
-/* @media (prefers-color-scheme: dark) {
-  * {
-    background-color: black;
-  }
-} */
