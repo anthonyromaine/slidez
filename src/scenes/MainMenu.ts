@@ -29,7 +29,7 @@ export default class MainMenu extends Phaser.Scene {
 
     // create title text
     this.add
-      .text(this.scale.width * 0.5, this.scale.height * 0.24, "SLIDEZ", {
+      .text(this.scale.width * 0.5, this.scale.height * 0.3, "SLIDEZ", {
         fontSize: "164px",
         fontFamily: "Semplicita",
         color: "#0c3e54",

@@ -1,6 +1,7 @@
 * {
   margin: 0;
   padding: 0;
+  background-color: #35baf3;
 }
 
 @font-face {
@@ -13,8 +14,8 @@
   src: url("Semplicita\ Ombra.otf");
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   * {
     background-color: black;
   }
-}
+} */

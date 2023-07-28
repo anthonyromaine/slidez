@@ -49,9 +49,7 @@ export default class Game extends Phaser.Scene {
 
   update(time: number, _delta: number): void {
     this.updateTimer(time - this.time.startTime);
-    const hasWon = this.updateTileStatus();
-
-    console.log(hasWon);
+    this.updateTileStatus();
   }
 
   private formatTime(ms: number) {
@@ -130,6 +128,8 @@ export default class Game extends Phaser.Scene {
         x: tile.x + Tile.SIZE * newPos.x,
         y: tile.y + Tile.SIZE * newPos.y,
         duration: 750,
+        onComplete: this.handleWin,
+        onCompleteParams: [this],
       });
     }
   }
@@ -157,7 +157,6 @@ export default class Game extends Phaser.Scene {
 
   private updateTileStatus() {
     let tiles = this.tiles.getChildren() as Tile[];
-    let hasWon = true;
 
     for (let i = 0; i < tiles.length; i++) {
       const newX =
@@ -170,10 +169,34 @@ export default class Game extends Phaser.Scene {
         tiles[i].correct();
       } else {
         tiles[i].incorrect();
-        hasWon = false;
+      }
+    }
+  }
+
+  private hasWon() {
+    let tiles = this.tiles.getChildren() as Tile[];
+    let won = true;
+
+    for (let i = 0; i < tiles.length; i++) {
+      const newX =
+        TilePositions[tiles[i].tileNum - 1].x * Tile.SIZE +
+        this.scale.width * 0.5;
+      const newY =
+        TilePositions[tiles[i].tileNum - 1].y * Tile.SIZE +
+        this.scale.height * 0.5;
+      if (tiles[i].x !== newX || tiles[i].y !== newY) {
+        won = false;
       }
     }
 
-    return hasWon;
+    return won;
+  }
+
+  private handleWin(_tween: Phaser.Tweens.Tween, _target: any, scene: Game) {
+    if (scene.hasWon()) {
+      scene.scene.start(SceneKeys.Win, {
+        completionTime: scene.formatTime(scene.time.now - scene.time.startTime),
+      });
+    }
   }
 }

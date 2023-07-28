@@ -17,7 +17,6 @@ export default class Tile extends Phaser.GameObjects.Container {
       .text(0, -10, String(tileNum), {
         fontFamily: "Oswald",
         fontSize: "96px",
-        // color: "#35baf3",
         color: "#000000",
       })
       .setOrigin(0.5, 0.5);

@@ -12,6 +12,7 @@ export default class Preloader extends Phaser.Scene {
     this.load.image(TextureKeys.BlueButton, "BlueButton.png");
     this.load.image(TextureKeys.BlueOutlineButton, "BlueOutlineButton.png");
     this.load.image(TextureKeys.GreenButton, "GreenButton.png");
+    this.load.image(TextureKeys.UICard, "UICard.png");
     this.add.text(0, 0, "A", {
       font: "1px Oswald",
     });
