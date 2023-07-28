@@ -38,7 +38,7 @@ export default class MainMenu extends Phaser.Scene {
 
     this.startButton.setInteractive();
     this.startButton.on("pointerdown", () => {
-      this.scene.start(SceneKeys.Game);
+      this.scene.start(SceneKeys.DifficultySelection);
     });
   }
 }

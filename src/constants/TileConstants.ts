@@ -3,7 +3,7 @@ import Difficulty from "./Difficulty";
 
 export const TileSize: Record<Difficulty, number> = {
   [Difficulty.Normal]: 160,
-  [Difficulty.Hard]: 100,
+  [Difficulty.Hard]: 130,
 };
 
 export const TilePositions: Record<Difficulty, Phaser.Math.Vector2[]> = {
@@ -48,11 +48,16 @@ export const TilePositions: Record<Difficulty, Phaser.Math.Vector2[]> = {
 };
 
 export const TileScale: Record<Difficulty, number> = {
-  [Difficulty.Normal]: 0.3,
-  [Difficulty.Hard]: 0.5,
+  [Difficulty.Normal]: 0.5,
+  [Difficulty.Hard]: 0.4,
 };
 
 export const TileFont: Record<Difficulty, string> = {
   [Difficulty.Normal]: "96px",
   [Difficulty.Hard]: "72px",
+};
+
+export const TileFontOffset: Record<Difficulty, number> = {
+  [Difficulty.Normal]: -10,
+  [Difficulty.Hard]: -5,
 };

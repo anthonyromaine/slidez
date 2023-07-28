@@ -4,6 +4,7 @@ enum TextureKeys {
   BlueButton = "blue-button",
   BlueOutlineButton = "blue-outline-button",
   GreenButton = "green-button",
+  OrangeButton = "orange-button",
   UICard = "ui-card",
 }
 

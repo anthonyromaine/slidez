@@ -1,5 +1,9 @@
 import TextureKeys from "../constants/TextureKeys";
-import { TileFont, TileScale } from "../constants/TileConstants";
+import {
+  TileFont,
+  TileFontOffset,
+  TileScale,
+} from "../constants/TileConstants";
 import Game from "../scenes/Game";
 
 export default class Tile extends Phaser.GameObjects.Container {
@@ -15,7 +19,7 @@ export default class Tile extends Phaser.GameObjects.Container {
       .setScale(TileScale[scene.difficulty]);
 
     this.tileText = scene.add
-      .text(0, -10, String(tileNum), {
+      .text(0, TileFontOffset[scene.difficulty], String(tileNum), {
         fontFamily: "Oswald",
         fontSize: TileFont[scene.difficulty],
         color: "#000000",

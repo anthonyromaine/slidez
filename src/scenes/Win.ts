@@ -60,7 +60,7 @@ export default class Win extends Phaser.Scene {
     playAgainButton.on(
       "pointerdown",
       () => {
-        this.scene.start(SceneKeys.Game);
+        this.scene.start(SceneKeys.MainMenu);
       },
       this,
     );
